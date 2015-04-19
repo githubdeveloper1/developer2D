@@ -7,6 +7,8 @@ public class RoleStateMachine : MonoBehaviour {
     {
         Idle,
         Run,
+        Jump,
+        Fall,
     }
 
     public delegate void OnTriggerEnterHandler(Collider2D coll);
@@ -31,7 +33,13 @@ public class RoleStateMachine : MonoBehaviour {
                 gameObject.GetComponent<SkeletonAnimation>().AnimationName = null;
                 break;
             case MotorState.Run:
-                gameObject.GetComponent<SkeletonAnimation>().AnimationName = "animation";
+                gameObject.GetComponent<SkeletonAnimation>().AnimationName = "run";
+                break;
+            case MotorState.Jump:
+                gameObject.GetComponent<SkeletonAnimation>().AnimationName = "jump";
+                break;
+            case MotorState.Fall:
+                gameObject.GetComponent<SkeletonAnimation>().AnimationName = "fall";
                 break;
         }
     }

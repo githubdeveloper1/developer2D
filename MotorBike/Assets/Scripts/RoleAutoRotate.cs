@@ -15,7 +15,7 @@ public class RoleAutoRotate : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        transform.localPosition = (wheel01.transform.localPosition + wheel02.transform.localPosition) / 2.0f - new Vector3(0,.8f,0);
+        transform.localPosition = (wheel01.transform.localPosition + wheel02.transform.localPosition) / 2.0f - new Vector3(0,.5f,0);
         float y = wheel01.transform.localPosition.y - wheel02.transform.localPosition.y;
         float x = wheel01.transform.localPosition.x - wheel02.transform.localPosition.x;
         //Debug.Log(Mathf.Atan(y / x) * Mathf.Rad2Deg);

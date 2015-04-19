@@ -52,9 +52,6 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -216,6 +213,7 @@
     <Compile Include="Assets\External\spine-unity\SpriteAttacher.cs" />
     <Compile Include="Assets\External\spine-unity\SpriteCollectionAttachmentLoader.cs" />
     <Compile Include="Assets\Scripts\ColliderListener.cs" />
+    <Compile Include="Assets\Scripts\LineRender.cs" />
     <Compile Include="Assets\Scripts\LogicHandle.cs" />
     <Compile Include="Assets\Scripts\RoleAutoRotate.cs" />
     <Compile Include="Assets\Scripts\RoleStateMachine.cs" />
@@ -249,6 +247,7 @@
     <None Include="Assets\External\spine-unity\Shaders\SkeletonLit.shader" />
     <None Include="Assets\Plugins\FingerGestures\Readme.txt" />
     <None Include="Assets\Resources\SpineResource\renshe.atlas.txt" />
+    <None Include="Assets\Shaders\LineShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>
