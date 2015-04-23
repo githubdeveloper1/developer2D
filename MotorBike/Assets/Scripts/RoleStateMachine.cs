@@ -46,7 +46,6 @@ public class RoleStateMachine : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        Debug.Log("OnTriggerEnterHandler");
         if (onTriggerEnterHandle != null)
         {
             onTriggerEnterHandle(coll);
@@ -55,7 +54,6 @@ public class RoleStateMachine : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        Debug.Log("OnCollisionEnter2D");
         if (onCollisionEnterHandle != null)
         {
             onCollisionEnterHandle(coll);

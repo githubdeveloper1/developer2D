@@ -197,10 +197,12 @@
      <Compile Include="Assets\External\spine-unity\SpriteCollectionAttachmentLoader.cs" />
      <Compile Include="Assets\Scripts\ColliderListener.cs" />
      <Compile Include="Assets\Scripts\LineRender.cs" />
+     <Compile Include="Assets\Scripts\LineVertsInfo.cs" />
      <Compile Include="Assets\Scripts\LogicHandle.cs" />
      <Compile Include="Assets\Scripts\RoleAutoRotate.cs" />
      <Compile Include="Assets\Scripts\RoleStateMachine.cs" />
      <Compile Include="Assets\Scripts\TouchManager.cs" />
+     <Compile Include="Assets\Scripts\Utils.cs" />
      <None Include="Assets\External\NGUI\ReadMe - 3.7.7.txt" />
      <None Include="Assets\External\spine-unity\Shaders\HiddenPass.shader" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Text 2.shader" />
@@ -211,6 +213,7 @@
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Premultiplied Colored 3.shader" />
      <None Include="Assets\Plugins\FingerGestures\Readme.txt" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Transparent Colored (TextureClip).shader" />
+     <None Include="Assets\Shaders\TextureShader.shader" />
      <None Include="Assets\Shaders\LineShader.shader" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Transparent Colored 1.shader" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Transparent Colored 3.shader" />

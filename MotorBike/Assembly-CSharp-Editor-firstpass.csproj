@@ -73,6 +73,7 @@
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Premultiplied Colored 3.shader" />
      <None Include="Assets\Plugins\FingerGestures\Readme.txt" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Transparent Colored (TextureClip).shader" />
+     <None Include="Assets\Shaders\TextureShader.shader" />
      <None Include="Assets\Shaders\LineShader.shader" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Transparent Colored 1.shader" />
      <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Transparent Colored 3.shader" />

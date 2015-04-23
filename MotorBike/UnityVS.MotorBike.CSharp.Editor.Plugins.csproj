@@ -15,9 +15,6 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
-    <UnityProjectType>EditorPlugins:7</UnityProjectType>
-    <UnityBuildTarget>iOS:9</UnityBuildTarget>
-    <UnityVersion>5.0.1f1</UnityVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,6 +82,12 @@
     <Reference Include="UnityEditor.OSXStandalone.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.OSXStandalone.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>Library\UnityAssemblies\UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -126,8 +129,6 @@
     <Compile Include="Assets\Plugins\Editor\FingerGestures\SwipeRecognizerInspector.cs" />
     <Compile Include="Assets\Plugins\Editor\FingerGestures\TapRecognizerInspector.cs" />
     <Compile Include="Assets\Plugins\Editor\FingerGestures\TwistRecognizerInspector.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Assets\External\NGUI\ReadMe - 3.7.7.txt" />
     <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Premultiplied Colored (TextureClip).shader" />
     <None Include="Assets\External\NGUI\Resources\Shaders\Unlit - Premultiplied Colored 1.shader" />
@@ -156,6 +157,7 @@
     <None Include="Assets\Plugins\FingerGestures\Readme.txt" />
     <None Include="Assets\Resources\SpineResource\renshe.atlas.txt" />
     <None Include="Assets\Shaders\LineShader.shader" />
+    <None Include="Assets\Shaders\TextureShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

@@ -6,6 +6,7 @@ public class LogicHandle : MonoBehaviour {
 
     public float addForce = .03f;
     public float power = 0.0015f;
+    public float moveAmount = .1f;
 
     private float motorPower = 0;
 
@@ -18,30 +19,65 @@ public class LogicHandle : MonoBehaviour {
     private GameObject winGo = null;
     private GameObject lostGo = null;
     private GameObject blackMask = null;
+    private GameObject directBts = null;
+    private GameObject selectedLineGo = null;
 
     private Vector3 wheel01Position = Vector3.zero;
     private Vector3 wheel02Position = Vector3.zero;
 
+    private Utils mUtils = null;
+
     private bool isPlay = false;
     private bool isWin = false;
+    private bool isGum = false;
+    private bool isTap = false;
+    private bool isTouchDirectUI = false;
+
+    private float ratio = 0;
+    private float gumAmount = .03f;
+
+    public enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+    }
+
+    public bool IsGum{
+        get{return isGum;}
+    }
+    public float GumAmount
+    {
+        get { return gumAmount; }
+    }
 	// Use this for initialization
 	void Start () {
+        mUtils = gameObject.GetComponent<Utils>();
+
         wheel01 = GameObject.Find("candy1");
         wheel01Position = wheel01.transform.localPosition;
         wheel02 = GameObject.Find("candy2");
         wheel02Position = wheel02.transform.localPosition;
         rensheGo = GameObject.Find("renshe");
 
-        GameObject.Find("PlayBt").GetComponent<UIEventListener>().onClick += OnUIClickHandler;
-        GameObject.Find("AddPowerBt").GetComponent<UIEventListener>().onClick += OnUIClickHandler;
         winGo = GameObject.Find("Win");
-        winGo.GetComponent<UIEventListener>().onClick += OnUIClickHandler;
-        winGo.SetActive(false);
         lostGo = GameObject.Find("Lost");
-        lostGo.GetComponent<UIEventListener>().onClick += OnUIClickHandler;
-        lostGo.SetActive(false);
+
+        AddUIClickListener(GameObject.Find("PlayBt"));
+        AddUIClickListener(GameObject.Find("AddPowerBt"));
+        AddUIClickListener(GameObject.Find("GumBt"));
+        AddUIClickListener(GameObject.Find("LeftBt"));
+        AddUIClickListener(GameObject.Find("RightBt"));
+        AddUIClickListener(GameObject.Find("UpBt"));
+        AddUIClickListener(GameObject.Find("DownBt"));
+        AddUIClickListener(GameObject.Find("DeleteBt"));
+        AddUIClickListener(winGo, false);
+        AddUIClickListener(lostGo, false);
         blackMask = GameObject.Find("blackMask");
         blackMask.SetActive(false);
+        directBts = GameObject.Find("DirectButtons");
+        directBts.SetActive(false);
 
         GameObject fingerGesture = GameObject.Find("FingerGestures");
         fingerGesture.GetComponent<TouchManager>().onDragHandle += OnGestureDragHandler;
@@ -53,34 +89,65 @@ public class LogicHandle : MonoBehaviour {
         wheel01.GetComponent<ColliderListener>().onCollisionExitHandle += OnCollisionExitHandler;
 
         touchPoint = GameObject.Find("TouchPen");
+        touchPoint.GetComponent<ColliderListener>().onCollisionEnterHandle += OnCollisionEnterHandler;
+
+        ratio = 640f / Screen.height;
 	}
 
-    void OnTriggerEnterHandler(Collider2D coll)
+    void OnTriggerEnterHandler(Collider2D coll,GameObject go)
     {
-        if (coll.gameObject.name == "END")
+        if (go.name == "candy1")
         {
-            NGUITools.SetActive(winGo, true);
-            NGUITools.SetActive(blackMask, true);
-            winGo.GetComponent<TweenScale>().PlayForward();
-            isWin = true;
+            if (coll.gameObject.name == "END")
+            {
+                NGUITools.SetActive(winGo, true);
+                NGUITools.SetActive(blackMask, true);
+                winGo.GetComponent<TweenScale>().PlayForward();
+                isWin = true;
+            }
         }
     }
 
-    void OnCollisionEnterHandler(Collision2D coll)
+    void OnCollisionEnterHandler(Collision2D coll, GameObject go)
     {
-        motorPower = power;
-        //rensheGo.GetComponent<RoleStateMachine>().ChangeMotorState(RoleStateMachine.MotorState.Run);
+        if (go.name == "candy1")
+        {
+            motorPower = power;
+        }
+        else if (go.name == "TouchPen")
+        {
+            if (coll.gameObject.name == "line" && isGum)
+            {
+                mUtils.GumClear(coll, go);
+            }
+            else if (coll.gameObject.name == "line" && !isGum && isTap)
+            {
+                selectedLineGo = coll.gameObject;
+                isTap = false;
+                directBts.SetActive(true);
+            }
+        }
     }
 
-    void OnCollisionExitHandler(Collision2D coll)
+    void OnCollisionExitHandler(Collision2D coll, GameObject go)
     {
         motorPower = 0;
-        //rensheGo.GetComponent<RoleStateMachine>().ChangeMotorState(RoleStateMachine.MotorState.Jump);
     }
 
     void OnGestureTapHandler(TapGesture gesture)
     {
-        
+        if (isTouchDirectUI)
+        {
+            isTouchDirectUI = false;
+        }
+        else
+        {
+            isTap = true;
+            touchPoint.transform.localPosition = (gesture.Position - new Vector2(Screen.width / 2, Screen.height / 2)) / 100 * ratio;
+            touchPoint.transform.GetChild(0).gameObject.SetActive(false);
+            touchPoint.transform.GetChild(1).gameObject.SetActive(false);
+            directBts.SetActive(false);
+        }
     }
 
     void OnGestureDragHandler(DragGesture gesture)
@@ -88,9 +155,13 @@ public class LogicHandle : MonoBehaviour {
         switch (gesture.Phase)
         {
             case ContinuousGesturePhase.Started:
+                touchPoint.transform.GetChild(0).gameObject.SetActive(true);
+                touchPoint.transform.GetChild(1).gameObject.SetActive(false);
+                directBts.SetActive(false);
+                touchPoint.transform.localEulerAngles = Vector3.zero;
                 break;
             case ContinuousGesturePhase.Updated:
-                touchPoint.transform.localPosition = (gesture.Position - new Vector2(Screen.width / 2, Screen.height / 2)) / 100;
+                touchPoint.transform.localPosition = (gesture.Position - new Vector2(Screen.width / 2, Screen.height / 2)) / 100 * ratio;
                 break;
             case ContinuousGesturePhase.Ended:
                 break;
@@ -126,6 +197,50 @@ public class LogicHandle : MonoBehaviour {
                 GameObject mLineGo = m_LineBox.transform.GetChild(i).gameObject;
                 DestroyImmediate(mLineGo);
             }
+        }
+        else if (go.name == "GumBt")
+        {
+            touchPoint.transform.localEulerAngles = Vector3.zero;
+            if (isGum)
+            {
+                isGum = false;
+                GameObject.Find("GumBt").GetComponent<UISprite>().color = Color.white;
+                touchPoint.transform.GetChild(0).gameObject.SetActive(true);
+                touchPoint.transform.GetChild(1).gameObject.SetActive(false);
+            }
+            else
+            {
+                isGum = true;
+                GameObject.Find("GumBt").GetComponent<UISprite>().color = Color.yellow;
+                touchPoint.transform.GetChild(0).gameObject.SetActive(false);
+                touchPoint.transform.GetChild(1).gameObject.SetActive(true);
+            }
+        }
+        else if (go.name == "LeftBt")
+        {
+            mUtils.setLinePosition(Direction.Left, selectedLineGo);
+            isTouchDirectUI = true;
+        }
+        else if (go.name == "RightBt")
+        {
+            mUtils.setLinePosition(Direction.Right, selectedLineGo);
+            isTouchDirectUI = true;
+        }
+        else if (go.name == "UpBt")
+        {
+            mUtils.setLinePosition(Direction.Up, selectedLineGo);
+            isTouchDirectUI = true;
+        }
+        else if (go.name == "DownBt")
+        {
+            mUtils.setLinePosition(Direction.Down, selectedLineGo);
+            isTouchDirectUI = true;
+        }
+        else if (go.name == "DeleteBt")
+        {
+            Destroy(selectedLineGo);
+            directBts.SetActive(false);
+            isTouchDirectUI = true;
         }
         else if (go.name == "Win" || go.name == "Lost")
         {
@@ -168,8 +283,10 @@ public class LogicHandle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        float radius = GetBikeRadius();
-        wheel01.GetComponent<Rigidbody2D>().AddForce(new Vector2(motorPower * Mathf.Cos(radius), motorPower * Mathf.Sin(radius)));
+        float radius = mUtils.GetBikeRadius(wheel01,wheel02);
+        float powerPercent = (100 + radius * Mathf.Rad2Deg) / 100f;
+        powerPercent = Mathf.Clamp(powerPercent, 0, 1.5f);
+        wheel01.GetComponent<Rigidbody2D>().AddForce(new Vector2(motorPower * Mathf.Cos(radius) * powerPercent, motorPower * Mathf.Sin(radius) * powerPercent));
 
         if (rensheGo.transform.localPosition.y < -30 && isPlay && !isWin)
         {
@@ -180,19 +297,10 @@ public class LogicHandle : MonoBehaviour {
         }
 	}
 
-    float GetBikeRadius()
+    void AddUIClickListener(GameObject go, bool isActive = true)
     {
-        float y = wheel01.transform.localPosition.y - wheel02.transform.localPosition.y;
-        float x = wheel01.transform.localPosition.x - wheel02.transform.localPosition.x;
-        float radius = 0;
-        if (x < 0)
-        {
-            radius = Mathf.Atan(y / x) + 180 * Mathf.Deg2Rad;
-        }
-        else
-        {
-            radius = Mathf.Atan(y / x);
-        }
-        return radius;
+        go.GetComponent<UIEventListener>().onClick += OnUIClickHandler;
+        go.SetActive(isActive);
     }
+
 }

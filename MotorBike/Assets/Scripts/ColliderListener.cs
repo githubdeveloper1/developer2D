@@ -3,11 +3,11 @@ using System.Collections;
 
 public class ColliderListener : MonoBehaviour {
 
-    public delegate void OnTriggerEnterHandler(Collider2D coll);
+    public delegate void OnTriggerEnterHandler(Collider2D coll,GameObject go);
     public OnTriggerEnterHandler onTriggerEnterHandle;
-    public delegate void OnCollisionEnterHandler(Collision2D coll);
+    public delegate void OnCollisionEnterHandler(Collision2D coll, GameObject go);
     public OnCollisionEnterHandler onCollisionEnterHandle;
-    public delegate void OnCollisionExitHandler(Collision2D coll);
+    public delegate void OnCollisionExitHandler(Collision2D coll, GameObject go);
     public OnCollisionExitHandler onCollisionExitHandle;
 	// Use this for initialization
 	void Start () {
@@ -23,7 +23,7 @@ public class ColliderListener : MonoBehaviour {
     {
         if (onTriggerEnterHandle != null)
         {
-            onTriggerEnterHandle(coll);
+            onTriggerEnterHandle(coll,gameObject);
         }
     }
 
@@ -31,7 +31,7 @@ public class ColliderListener : MonoBehaviour {
     {
         if (onCollisionEnterHandle != null)
         {
-            onCollisionEnterHandle(coll);
+            onCollisionEnterHandle(coll,gameObject);
         }
     }
 
@@ -39,7 +39,7 @@ public class ColliderListener : MonoBehaviour {
     {
         if (onCollisionExitHandle != null)
         {
-            onCollisionExitHandle(coll);
+            onCollisionExitHandle(coll,gameObject);
         }
     }
 }
